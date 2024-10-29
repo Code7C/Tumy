@@ -108,6 +108,20 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         }
 
     </style>
+    <script>
+    function cargarLocalidades(provinciaId) {
+        fetch('ubicaciones.php?provincia_id=' + provinciaId)
+            .then(response => response.json())
+            .then(data => {
+                const localidadesSelect = document.getElementById('localidad');
+                localidadesSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
+                data.forEach(localidad => {
+                    localidadesSelect.innerHTML += `<option value="${localidad.localidad}">${localidad.localidad}</option>`;
+                });
+            });
+    }
+    </script>
+
 </head>
 <body>
     <div class="container">
@@ -116,7 +130,20 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
             <input type="text" name="nombre_usuario" placeholder="Nombre de Usuario" required>
-            <input type="text" name="ubicacion" placeholder="Ubicación" required>
+            <select name="provincia" id="provincia" required onchange="cargarLocalidades(this.value)">
+                <option value="">Seleccione una provincia</option>
+                    <?php
+                        $sql = "SELECT id, provincia FROM provincias";
+                        $result = $cnx->query($sql);
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<option value='{$row['id']}'>{$row['provincia']}</option>";
+                        }
+                    ?>
+            </select>
+            <select name="localidad" id="localidad" required>
+                <option value="">Seleccione una localidad</option>
+            </select>
+            <input type="hidden" name="ubicacion" id="ubicacion">
             <input type="date" name="fecha_nacimiento" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="contrasena" placeholder="Contraseña" required>
@@ -124,5 +151,15 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         </form>
         <?php if (isset($mensaje)) echo "<p>$mensaje</p>"; ?>
     </div>
+    <script>
+    document.querySelector("form").addEventListener("submit", function() {
+        const provincia = document.getElementById("provincia").value;
+        const localidad = document.getElementById("localidad").value;
+        const ubicacion = `${provincia}, ${localidad}`;
+        
+        document.getElementById("ubicacion").value = ubicacion;
+    });
+    </script>
+
 </body>
 </html>
