@@ -347,7 +347,7 @@ session_start(); // Iniciar la sesión
                             <a href="perfil_empresa.php">Perfil (<?php echo $_SESSION['nombre_organizacion']; ?>)</a>
                             <a href="cerrar_sesion.php">Cerrar Sesión</a><br>
                         <?php else: ?>
-                            <a href="iniciar_sesion.php" class="boton">Iniciar Sesión</a>
+                            <a href="iniciar_sesion.html" class="boton">Iniciar Sesión</a>
                         <?php endif; ?>
                     </ul>
                 </div>

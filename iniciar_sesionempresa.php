@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión Empresa</title>
     <style>
+
+         body {
+            background-image: url("ft/fond.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0e0e0e;
+            color: #fff;
+        }
+
         body {
             font-family: 'Arial', sans-serif;
             background-color: #1c1c1c;
@@ -16,7 +30,7 @@
         }
 
         .login-container {
-            background-color: #2a2a2a;
+            background-color: #135124;
             padding: 40px;
             border-radius: 10px;
             text-align: center;
@@ -63,6 +77,24 @@
         .login-container .register:hover {
             color: white;
         }
+
+        /* Estilo para el botón */
+        .boton {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #177828; /* Color de fondo del botón */
+            color: white; /* Color del texto */
+            text-decoration: none; /* Quitar subrayado */
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease; /* Animación para el hover */
+        }
+
+        .boton:hover {
+            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
+        }
     </style>
 </head>
 <body>
@@ -72,7 +104,7 @@
             <input type="email" name="email" placeholder="Correo Electrónico de la Empresa" required>
             <input type="password" name="password" placeholder="Contraseña" required>
             <br>
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit" class="boton">Iniciar Sesión</button>
         </form>
         <a href="register_empresa.php" class="register">¿No tienes cuenta? Regístrate como Empresa</a>
     </div>

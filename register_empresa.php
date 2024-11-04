@@ -37,6 +37,20 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
     <title>Registro de Empresa</title>
     <link rel="stylesheet" href="styles.css"> 
     <style>
+
+        body {
+            background-image: url("ft/fond.jpg");
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #0e0e0e;
+            color: #fff;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #2c2c2c; /* Fondo oscuro */
@@ -52,7 +66,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             width: 100%;
             max-width: 500px; /* Ancho máximo del contenedor */
             padding: 20px;
-            background: #3a3a3a; /* Fondo más claro para el contenedor */
+            background: #135124; /* Fondo más claro para el contenedor */
             border-radius: 8px; /* Bordes redondeados */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para efecto de profundidad */
         }
@@ -81,7 +95,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             border: 1px solid #555; /* Borde gris oscuro */
             border-radius: 4px; /* Bordes redondeados para los campos */
             font-size: 16px; /* Tamaño de fuente */
-            background-color: #444; /* Fondo oscuro para los campos */
+            background-color: #084309; /* Fondo oscuro para los campos */
             color: #f4f4f4; /* Texto claro en los campos */
         }
 
@@ -111,6 +125,24 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         .error-message {
             text-align: center; /* Centra el texto de los mensajes */
             color: red; /* Color del texto del mensaje de error */
+        }
+
+        /* Estilo para el botón */
+        .boton {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #177828; /* Color de fondo del botón */
+            color: white; /* Color del texto */
+            text-decoration: none; /* Quitar subrayado */
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease; /* Animación para el hover */
+        }
+
+        .boton:hover {
+            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
         }
 
     </style>
@@ -162,8 +194,12 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
 
             <label for="contrasena">Contraseña</label>
             <input type="password" name="contrasena" placeholder="Contraseña" required>
+<<<<<<< HEAD
 
             <button type="submit" name="register_empresa">Registrarse</button>
+=======
+            <button type="submit" name="register_empresa" class="boton">Registrarse</button>
+>>>>>>> 0cd351a1c0ec5131c098707c5f036fca927f6b15
         </form>
         <?php if (isset($mensaje_empresa)) echo "<p class='error-message'>$mensaje_empresa</p>"; ?>
     </div>
