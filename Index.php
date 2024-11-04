@@ -1,7 +1,17 @@
 <?php
 session_start(); // Iniciar la sesión
+
+// Incluir el archivo de conexión a la base de datos
+include 'db.php';
+
+// Verificar si la conexión se realizó correctamente
+if (!$cnx) {
+    die("Conexión fallida: " . mysqli_connect_error());
+}
+
+// Consulta para obtener las publicaciones
 $sql = "SELECT organizacion, titulo, contenido, fecha_publicacion FROM publicaciones ORDER BY fecha_publicacion DESC";
-$result = $conn->query($sql); //incluir las publicaciones
+$result = $cnx->query($sql); // Usar $cnx en lugar de $conn
 ?>
 
 <!DOCTYPE html>
@@ -39,8 +49,13 @@ $result = $conn->query($sql); //incluir las publicaciones
             margin-right: 20px;
         }
 
+        .navbar .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
         .navbar input[type="search"] {
-            width: 400px;
+            width: 300px;
             padding: 10px;
             border-radius: 5px;
             border: none;
@@ -60,7 +75,13 @@ $result = $conn->query($sql); //incluir las publicaciones
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+            margin-left: 20px;
         }
+
+        .navbar button:hover {
+            background-color: #e65a00;
+        }
+
         /* Estilo para la barra de búsqueda */
         .search-container {
             position: relative;
@@ -113,9 +134,8 @@ $result = $conn->query($sql); //incluir las publicaciones
         }
 
         .keyword:hover {
-            background-color: #e55c00;
+            background-color: #e65a00;
         }
-
 
         /* Barra lateral izquierda */
         .sidebar {
@@ -133,10 +153,16 @@ $result = $conn->query($sql); //incluir las publicaciones
             margin-bottom: 20px;
         }
 
-        .sidebar p {
-            font-size: 16px;
+        .sidebar a {
             color: #ccc;
+            text-decoration: none;
+            font-size: 16px;
             margin-top: 20px;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            color: white;
         }
 
         /* Contenido principal */
@@ -179,6 +205,10 @@ $result = $conn->query($sql); //incluir las publicaciones
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
+        }
+
+        .post-header button:hover {
+            background-color: #005bb5;
         }
 
         .post-content {
@@ -237,98 +267,48 @@ $result = $conn->query($sql); //incluir las publicaciones
     </style>
 </head>
 <body>
-    <script>
-        function toggleSearchBox() {
-            const searchBox = document.getElementById("search-box");
-            searchBox.style.display = searchBox.style.display === "block" ? "none" : "block";
-            document.getElementById("search-term").focus(); // Enfoca el input de búsqueda
-        }
-
-        function filterResults() {
-            const input = document.getElementById("search-term").value.toLowerCase();
-            const keywords = document.querySelectorAll(".keyword");
-
-            keywords.forEach(keyword => {
-                if (keyword.innerText.toLowerCase().includes(input)) {
-                    keyword.style.display = "block"; // Muestra las palabras clave que coinciden
-                } else {
-                    keyword.style.display = "none"; // Oculta las palabras clave que no coinciden
-                }
-            });
-        }
-
-        function selectKeyword(keyword) {
-            document.getElementById("search-term").value = keyword; // Establece el valor del input
-            toggleSearchBox(); // Cierra el recuadro de búsqueda
-        }
-
-        // Cierra el cuadro de búsqueda al hacer clic fuera de él
-        window.onclick = function(event) {       
-            if (!event.target.matches('#search-input')) {
-                const searchBox = document.getElementById("search-box");
-                searchBox.style.display = "none";
-            }
-        }
-    </script>
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.php">Inicio</a></li>
-                <!-- Mostrar el perfil o el enlace a iniciar sesión según la sesión de empresa -->
-                <?php if (isset($_SESSION['nombre_organizacion'])): ?>
-                    <li><a href="perfil_empresa.php">Perfil (<?php echo $_SESSION['nombre_organizacion']; ?>)</a></li>
-                    <li><a href="cerrar_sesion.php">Cerrar Sesión</a></li>
-                <?php else: ?>
-                    <li><a href="iniciar_sesionempresa.php">Iniciar Sesión</a></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
+        <!-- Barra superior con título y búsqueda -->
         <div class="navbar">
-        <h1>TUMY</h1>
-        <!-- Barra de búsqueda con funcionalidad -->
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="Buscar en TUMY" onclick="toggleSearchBox()" readonly>
-            <div id="search-box" class="search-box">
-                <input type="text" id="search-term" placeholder="Escribe para buscar..." oninput="filterResults()">
-                <div class="location-container">
-                    <label for="location">Cambiar ubicación:</label>
-                    <select id="location">
-                        <option value="ubicacion1">Ubicación 1</option>
-                        <option value="ubicacion2">Ubicación 2</option>
-                        <option value="ubicacion3">Ubicación 3</option>
-                        <!-- Agrega más ubicaciones según sea necesario -->
-                    </select>
-                </div>
-                <div class="keywords-container">
-                    <label>Palabras clave:</label>
-                    <div id="keywords">
-                        
-                        <div class="keyword" onclick="selectKeyword('Keyword 1')">Keyword 1</div>
-                        <div class="keyword" onclick="selectKeyword('Keyword 2')">Keyword 2</div>
-                        <div class="keyword" onclick="selectKeyword('Keyword 3')">Keyword 3</div>
-                        <!-- Estas palabras clave deben ser generadas dinámicamente según las publicaciones -->
+            <h1>TUMY</h1>
+            <div class="nav-right">
+                <!-- Barra de búsqueda -->
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Buscar en TUMY" onclick="toggleSearchBox()" readonly>
+                    <div id="search-box" class="search-box">
+                        <input type="text" id="search-term" placeholder="Escribe para buscar..." oninput="filterResults()">
+                        <div class="location-container">
+                            <label for="location">Cambiar ubicación:</label>
+                            <select id="location">
+                                <option value="ubicacion1">Ubicación 1</option>
+                                <option value="ubicacion2">Ubicación 2</option>
+                                <option value="ubicacion3">Ubicación 3</option>
+                            </select>
+                        </div>
+                        <div class="keywords-container">
+                            <label>Palabras clave:</label>
+                            <div id="keywords">
+                                <div class="keyword" onclick="selectKeyword('Keyword 1')">Keyword 1</div>
+                                <div class="keyword" onclick="selectKeyword('Keyword 2')">Keyword 2</div>
+                                <div class="keyword" onclick="selectKeyword('Keyword 3')">Keyword 3</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <button onclick="location.href='iniciar_sesion.html'">Iniciar sesión</button>
             </div>
         </div>
-        <button onclick="location.href='iniciar_sesion.html'">Iniciar sesión</button> <!-- Redirección al inicio de sesión -->
-        </div>
-        
+    </header>
 
-        <!-- Barra lateral izquierda -->
-        <div class="sidebar">
-            <h1>Principal</h1>
-            <a href="publicar_empresa.php">Publicar</a>
-            <br>
-            <a href="perfil_empresa.html">Perfil</a>
-            <p>Popular</p>
-        </div>
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <h1>Principal</h1>
+        <a href="perfil.html">Perfil</a>
+        <p>Popular</p>
+    </div>
 
-        <!-- Contenido principal -->
-       <div class="main-content">
+    <!-- Contenido principal -->
+    <div class="main-content">
         <!-- Publicaciones -->
         <?php if ($result->num_rows > 0): ?>
             <?php while ($row = $result->fetch_assoc()): ?>
@@ -356,15 +336,38 @@ $result = $conn->query($sql); //incluir las publicaciones
 
         <?php $conn->close(); // Cerrar la conexión ?>
     </div>
-        <!-- Barra lateral derecha -->
-        <div class="right-sidebar">
-            <h2>Organizaciones Populares</h2>
-            <div class="user-info">
-                <p>Usuario</p>
-                <p>Ubicación</p>
-                <p>Comentarios Recientes</p>
-            </div>
-        </div>
-    </main>
+
+    <script>
+        function toggleSearchBox() {
+            const searchBox = document.getElementById("search-box");
+            searchBox.style.display = searchBox.style.display === "block" ? "none" : "block";
+            document.getElementById("search-term").focus(); // Enfoca el input de búsqueda
+        }
+
+        function filterResults() {
+            const input = document.getElementById("search-term").value.toLowerCase();
+            const keywords = document.querySelectorAll(".keyword");
+
+            keywords.forEach(keyword => {
+                if (keyword.innerText.toLowerCase().includes(input)) {
+                    keyword.style.display = "block";
+                } else {
+                    keyword.style.display = "none";
+                }
+            });
+        }
+
+        function selectKeyword(keyword) {
+            document.getElementById("search-term").value = keyword;
+            toggleSearchBox();
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('#search-input')) {
+                const searchBox = document.getElementById("search-box");
+                searchBox.style.display = "none";
+            }
+        }
+    </script>
 </body>
 </html>

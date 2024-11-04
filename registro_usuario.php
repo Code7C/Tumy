@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nombre = $_POST['nombre'];
         $apellido = $_POST['apellido'];
         $nombre_usuario = $_POST['nombre_usuario'];
-        $ubicacion = $_POST['ubicacion'];
+        $localidad = $_POST['localidad'];
         $fecha_nacimiento = $_POST['fecha_nacimiento'];
         $email = $_POST['email'];
         $contrasena = password_hash($_POST['contrasena'], PASSWORD_DEFAULT); // Hashear la contraseña
@@ -40,24 +40,10 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
     <title>Registro de Usuario</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-
-        body {
-            background-image: url("ft/fond.jpg");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #0e0e0e;
-            color: #fff;
-        }
-
         body {
             font-family: Arial, sans-serif;
             background-color: #2c2c2c; /* Fondo oscuro */
-            color:white; /* Color del texto en claro */
+            color: #f4f4f4; /* Color del texto en claro */
             margin: 0;
             padding: 20px;
         }
@@ -66,14 +52,14 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             max-width: 500px; /* Ancho máximo del contenedor */
             margin: auto; /* Centramos el contenedor */
             padding: 20px;
-            background: #135124; /* Fondo más claro para el contenedor */
+            background: #3a3a3a; /* Fondo más claro para el contenedor */
             border-radius: 8px; /* Bordes redondeados */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para efecto de profundidad */
         }
 
         h1 {
             text-align: center; /* Centra el texto del título */
-            color:white; /* Color blanco para el título */
+            color: #ffffff; /* Color blanco para el título */
         }
 
         form {
@@ -90,8 +76,8 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             border: 1px solid #555; /* Borde gris oscuro */
             border-radius: 4px; /* Bordes redondeados para los campos */
             font-size: 16px; /* Tamaño de fuente */
-            background-color: #084309; /* Fondo oscuro para los campos */
-            color:white; /* Texto claro en los campos */
+            background-color: #444; /* Fondo oscuro para los campos */
+            color: #f4f4f4; /* Texto claro en los campos */
         }
 
         input[type="text"]:focus,
@@ -121,39 +107,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             color: red; /* Color del texto del mensaje de error */
         }
 
-        /* Estilo para el botón */
-        .boton {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: #177828; /* Color de fondo del botón */
-            color: white; /* Color del texto */
-            text-decoration: none; /* Quitar subrayado */
-            font-size: 1.2em;
-            font-weight: bold;
-            border-radius: 5px;
-            margin-top: 20px;
-            transition: background-color 0.3s ease; /* Animación para el hover */
-        }
-
-        .boton:hover {
-            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
-        }
-
     </style>
-    <script>
-    function cargarLocalidades(provinciaId) {
-        fetch('ubicaciones.php?provincia_id=' + provinciaId)
-            .then(response => response.json())
-            .then(data => {
-                const localidadesSelect = document.getElementById('localidad');
-                localidadesSelect.innerHTML = '<option value="">Seleccione una localidad</option>';
-                data.forEach(localidad => {
-                    localidadesSelect.innerHTML += `<option value="${localidad.localidad}">${localidad.localidad}</option>`;
-                });
-            });
-    }
-    </script>
-
 </head>
 <body>
     <div class="container">
@@ -162,24 +116,60 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             <input type="text" name="nombre" placeholder="Nombre" required>
             <input type="text" name="apellido" placeholder="Apellido" required>
             <input type="text" name="nombre_usuario" placeholder="Nombre de Usuario" required>
-            <select name="provincia" id="provincia" required onchange="cargarLocalidades(this.value)">
-                <option value="">Seleccione una provincia</option>
-                    <?php
-                        $sql = "SELECT id, provincia FROM provincias";
-                        $result = $cnx->query($sql);
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<option value='{$row['id']}'>{$row['provincia']}</option>";
-                        }
-                    ?>
-            </select>
+           <label for="localidad">Localidad</label>
             <select name="localidad" id="localidad" required>
                 <option value="">Seleccione una localidad</option>
+                <?php
+                $localidades = ["Achiras", "Agua de Oro", "Alcira Gigena", "Almafuerte", "Alpa Corral", "Alta Gracia",
+                                "Amboy", "Anisacate", "Arias", "Arroyito", "Arroyo de los Patos", "Ascochinga", 
+                                "Athos Pampa", "Ballesteros", "Balnearia", "Bell Ville", "Berrotarán", "Bialet Masse",
+                                "Brinkmann", "Cabalango", "Calmayo", "Caminiaga", "Canals", "Cañada del Sauce", 
+                                "Capilla del Monte", "Casa Grande", "Cavanagh", "Cerro Champaqui", "Cerro Colorado", 
+                                "Charbonier", "Ciudad de Córdoba", "Colonia Caroya", "Copacabana", "Coronel Moldes", 
+                                "Corral de Bustos", "Cosquín", "Cruz Alta", "Cruz Chica", "Cruz del Eje", "Cruz Grande",
+                                "Cuesta Blanca", "D. Velez Sarsfield", "Dean Funes", "Del Campillo", "Despeñaderos", 
+                                "Devoto", "El Durazno", "El Manzano", "El Tío", "Embalse", "Estancia Vieja", 
+                                "Falda del Carmen", "General Baldissera", "General Cabrera", "General Deheza", 
+                                "General Levalle", "Hernando", "Huerta Grande", "Huinca Renanco", "Icho Cruz", 
+                                "Ifflinger", "Intiyaco", "Ischilín", "James Craik", "Jesús María", 
+                                "José de la Quintana", "Jovita", "Juárez Celman", "Justiniano Posse", "La Bolsa", 
+                                "Laboulaye", "La Calera", "La Carlota", "La Cesira", "La Cruz", "La Cumbre", 
+                                "La Cumbrecita", "La Falda", "La Francia", "La Granja", "La Higuera", "La Paisanita", 
+                                "La Para", "La Paz", "La Población", "La Rancherita", "Las Albahacas", "Las Caleras", 
+                                "Las Calles", "Las Chacras", "La Serranita", "Las Jarillas", "Las Peñas", "Las Perdices",
+                                "Las Rabonas", "Las Tapias", "Las Varillas", "Leones", "Loma Bola", "Los Cerrillos", 
+                                "Los Cocos", "Los Cóndores", "Los Gigantes", "Los Hornillos", "Los Molinos", 
+                                "Los Pozos", "Los Reartes", "Los Surgentes", "Loza Corral", "Luque", "Lutti", 
+                                "Luyaba", "Marcos Juárez", "Marull", "Mayu Sumaj", "Mendiolaza", "Mina Clavero", 
+                                "Miramar", "Molinari", "Monte Buey", "Monte Maíz", "Morteros", "Nono", "Oliva", 
+                                "Oncativo", "Ongamira", "Panaholma", "Pilar", "Potrero de Garay", "Quilino", 
+                                "Rio Ceballos", "Río Cuarto", "Río de los Sauces", "Río Primero", "Río Segundo", 
+                                "Rio Tercero", "Sacanta", "Saldan", "Salsacate", "Salsipuedes", "Sampacho", 
+                                "San Agustín", "San A. de Arredondo", "San Carlos Minas", "San Clemente", "San Esteban",
+                                "San Francisco", "S. Francisco del Chañar", "San Javier", "San Jose de la Dormida", 
+                                "San Lorenzo", "San Marcos Sierras", "San Miguel de los Ríos", "San Roque", 
+                                "Santa Catalina", "Santa Cruz del Lago", "Santa María de Punilla", "Santa Mónica", 
+                                "Santa Rosa", "Segunda Usina", "Serrano", "Sinsacate", "Tala Huasi", "Tancacha", 
+                                "Tanti", "Ucacha", "Unquillo", "Valle Hermoso", "Vicuña Mackenna", "Villa Allende", 
+                                "Villa Alpina", "Villa Amancay", "Villa Animi", "Villa Ascasubi", "Villa Berna", 
+                                "Villa Carlos Paz", "Villa Cerro Azul", "Villa Ciudad de América", "Villa Ciudad Parque",
+                                "Villa Cura Brochero", "Villa del Dique", "Villa del Rosario", "Villa del Totoral", 
+                                "Villa de María", "Villa de Pocho", "Villa de Soto", "Villa de Tulumba", 
+                                "Villa Dolores", "Villa El Chacay", "Villa General Belgrano", "Villa Giardino", 
+                                "Villa Huidobro", "Villa La Merced", "Villa de Las Rosas", "Villa los Aromos", 
+                                "Villa Maria", "Villa Parque Siquiman", "Villa Quillinzo", "Villa Rumipal", 
+                                "Villa San Miguel", "Villa Silvina", "Villa Yacanto", "Yacanto"];
+
+                foreach ($localidades as $localidad) {
+                    echo "<option value='$localidad'>$localidad</option>";
+                }
+                ?>
             </select>
-            <input type="hidden" name="ubicacion" id="ubicacion">
+            <br>
             <input type="date" name="fecha_nacimiento" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="contrasena" placeholder="Contraseña" required>
-            <button type="submit" name="register_user" class="boton">Registrarse</button>
+            <button type="submit" name="register_user">Registrarse</button>
         </form>
         <?php if (isset($mensaje)) echo "<p>$mensaje</p>"; ?>
     </div>
