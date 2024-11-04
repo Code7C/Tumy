@@ -1,9 +1,21 @@
 <?php
-session_start(); // Iniciar la sesión
-$sql = "SELECT organizacion, titulo, contenido, fecha_publicacion FROM publicaciones ORDER BY fecha_publicacion DESC";
-$result = $conn->query($sql); //incluir las publicaciones
-?>
+include 'db.php'; // Conectar a la base de datos
 
+$sql = "
+SELECT 
+    p.titulo, 
+    p.cuerpo, 
+    p.fecha_publicacion, 
+    e.nombre_organizacion AS organizacion
+FROM 
+    publicaciones p
+LEFT JOIN 
+    empresas e ON p.empresa_id = e.id
+ORDER BY 
+    p.fecha_publicacion DESC
+";
+$result = $cnx->query($sql); // Ejecutar la consulta
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -66,7 +78,8 @@ $result = $conn->query($sql); //incluir las publicaciones
             position: relative;
         }
 
-        #search-input {
+        #search-input 
+        {
             padding: 8px;
             border-radius: 5px;
             border: none;
@@ -89,7 +102,8 @@ $result = $conn->query($sql); //incluir las publicaciones
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        #search-term {
+        #search-term 
+        {
             width: 100%;
             padding: 8px;
             border-radius: 5px;
@@ -254,7 +268,7 @@ $result = $conn->query($sql); //incluir las publicaciones
                 } else {
                     keyword.style.display = "none"; // Oculta las palabras clave que no coinciden
                 }
-            });
+            };
         }
 
         function selectKeyword(keyword) {
@@ -341,7 +355,7 @@ $result = $conn->query($sql); //incluir las publicaciones
                         <button>Ver</button>
                     </div>
                     <div class="post-content">
-                        <?php echo htmlspecialchars($row['contenido']); ?>
+                        <?php echo htmlspecialchars($row['cuerpo']); ?>
                     </div>
                     <div class="post-buttons">
                         <button>Me gusta</button>
@@ -354,8 +368,9 @@ $result = $conn->query($sql); //incluir las publicaciones
             <p>No hay publicaciones disponibles.</p>
         <?php endif; ?>
 
-        <?php $conn->close(); // Cerrar la conexión ?>
+        <?php $cnx->close(); // Cerrar la conexión ?>
     </div>
+
         <!-- Barra lateral derecha -->
         <div class="right-sidebar">
             <h2>Organizaciones Populares</h2>

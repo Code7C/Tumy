@@ -1,19 +1,22 @@
 <?php
-session_start(); // Iniciar la sesión
+include 'db.php'; // Conectar a la base de datos
 
-// Incluir el archivo de conexión a la base de datos
-include 'db.php';
-
-// Verificar si la conexión se realizó correctamente
-if (!$cnx) {
-    die("Conexión fallida: " . mysqli_connect_error());
-}
-
-// Consulta para obtener las publicaciones
-$sql = "SELECT organizacion, titulo, contenido, fecha_publicacion FROM publicaciones ORDER BY fecha_publicacion DESC";
-$result = $cnx->query($sql); // Usar $cnx en lugar de $conn
+$sql = "
+SELECT 
+    p.titulo, 
+    p.cuerpo, 
+    p.fecha_publicacion, 
+    p.palabras_claves,
+    e.nombre_organizacion AS organizacion
+FROM 
+    publicaciones p
+LEFT JOIN 
+    empresas e ON p.empresa_id = e.id
+ORDER BY 
+    p.fecha_publicacion DESC
+";
+$result = $cnx->query($sql); // Ejecutar la consulta
 ?>
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -171,6 +174,24 @@ $result = $cnx->query($sql); // Usar $cnx en lugar de $conn
             margin-right: 22%;
             padding: 30px;
         }
+        .post-tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #ff5f00;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .tag:hover {
+            background-color: #e65a00;
+        }
+
 
         .post {
             background-color: #2a2a2a;
@@ -321,7 +342,19 @@ $result = $cnx->query($sql); // Usar $cnx en lugar de $conn
                         <button>Ver</button>
                     </div>
                     <div class="post-content">
-                        <?php echo htmlspecialchars($row['contenido']); ?>
+                        <?php echo htmlspecialchars($row['cuerpo']); ?>
+                    </div>
+                    <div class="post-tags">
+                        <?php 
+                        $palabras_claves = explode(',', $row['palabras_claves']); // Divide las palabras clave en un array
+                        foreach ($palabras_claves as $clave): 
+                            if (!empty(trim($clave))): // Evita etiquetas vacías
+                        ?>
+                            <span class="tag"><?php echo htmlspecialchars(trim($clave)); ?></span>
+                        <?php 
+                            endif;
+                        endforeach; 
+                        ?>
                     </div>
                     <div class="post-buttons">
                         <button>Me gusta</button>
@@ -334,7 +367,7 @@ $result = $cnx->query($sql); // Usar $cnx en lugar de $conn
             <p>No hay publicaciones disponibles.</p>
         <?php endif; ?>
 
-        <?php $conn->close(); // Cerrar la conexión ?>
+        <?php $cnx->close(); // Cerrar la conexión ?>
     </div>
 
     <script>
