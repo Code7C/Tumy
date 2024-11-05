@@ -1,21 +1,7 @@
 <?php
-include 'db.php'; // Conectar a la base de datos
-
-$sql = "
-SELECT 
-    p.titulo, 
-    p.cuerpo, 
-    p.fecha_publicacion, 
-    e.nombre_organizacion AS organizacion
-FROM 
-    publicaciones p
-LEFT JOIN 
-    empresas e ON p.empresa_id = e.id
-ORDER BY 
-    p.fecha_publicacion DESC
-";
-$result = $cnx->query($sql); // Ejecutar la consulta
+session_start(); // Iniciar la sesión
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -78,8 +64,7 @@ $result = $cnx->query($sql); // Ejecutar la consulta
             position: relative;
         }
 
-        #search-input 
-        {
+        #search-input {
             padding: 8px;
             border-radius: 5px;
             border: none;
@@ -102,8 +87,7 @@ $result = $cnx->query($sql); // Ejecutar la consulta
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
-        #search-term 
-        {
+        #search-term {
             width: 100%;
             padding: 8px;
             border-radius: 5px;
@@ -268,7 +252,7 @@ $result = $cnx->query($sql); // Ejecutar la consulta
                 } else {
                     keyword.style.display = "none"; // Oculta las palabras clave que no coinciden
                 }
-            };
+            });
         }
 
         function selectKeyword(keyword) {
@@ -342,34 +326,44 @@ $result = $cnx->query($sql); // Ejecutar la consulta
         </div>
 
         <!-- Contenido principal -->
-       <div class="main-content">
-        <!-- Publicaciones -->
-        <?php if ($result->num_rows > 0): ?>
-            <?php while ($row = $result->fetch_assoc()): ?>
-                <div class="post">
-                    <div class="post-header">
-                        <div>
-                            <h2><?php echo htmlspecialchars($row['organizacion']); ?></h2>
-                            <p><?php echo htmlspecialchars($row['titulo']); ?> - Publicado el: <?php echo htmlspecialchars($row['fecha_publicacion']); ?></p>
-                        </div>
-                        <button>Ver</button>
+        <div class="main-content">
+            <!-- Publicaciones -->
+            <div class="post">
+                <div class="post-header">
+                    <div>
+                        <h2>Organización</h2>
+                        <p>Título del Voluntariado - Publicado el: [Fecha]</p>
                     </div>
-                    <div class="post-content">
-                        <?php echo htmlspecialchars($row['cuerpo']); ?>
-                    </div>
-                    <div class="post-buttons">
-                        <button>Me gusta</button>
-                        <button>Comentar</button>
-                        <button>Compartir</button>
-                    </div>
+                    <button>Ver</button>
                 </div>
-            <?php endwhile; ?>
-        <?php else: ?>
-            <p>No hay publicaciones disponibles.</p>
-        <?php endif; ?>
+                <div class="post-content">
+                    Desarrollo del voluntariado
+                </div>
+                <div class="post-buttons">
+                    <button>Me gusta</button>
+                    <button>Comentar</button>
+                    <button>Compartir</button>
+                </div>
+            </div>
 
-        <?php $cnx->close(); // Cerrar la conexión ?>
-    </div>
+            <div class="post">
+                <div class="post-header">
+                    <div>
+                        <h2>Organización</h2>
+                        <p>Título del Voluntariado - Publicado el: [Fecha]</p>
+                    </div>
+                    <button>Ver</button>
+                </div>
+                <div class="post-content">
+                    Desarrollo del voluntariado
+                </div>
+                <div class="post-buttons">
+                    <button>Me gusta</button>
+                    <button>Comentar</button>
+                    <button>Compartir</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Barra lateral derecha -->
         <div class="right-sidebar">
