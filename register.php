@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $nombre = trim($_POST['nombre']);
         $apellido = trim($_POST['apellido']);
         $nombre_usuario = trim($_POST['nombre_usuario']);
-        $ubicacion = $_POST['ubicacion'];
+        $ubicacion = trim($_POST['ubicacion']);
         $fecha_nacimiento = $_POST['fecha_nacimiento'];
         $email = trim($_POST['email']);
         $contrasena = password_hash($_POST['contrasena'], PASSWORD_DEFAULT); // Hash de la contraseña

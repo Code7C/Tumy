@@ -261,6 +261,25 @@ session_start(); // Iniciar la sesión
         .boton:hover {
             background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
         }
+
+
+        /* Estilo para el botón 2*/
+        .boton2 {
+            display: inline-block;
+            padding: 4px 15px;
+            background-color: #177828; /* Color de fondo del botón */
+            color: white; /* Color del texto */
+            text-decoration: none; /* Quitar subrayado */
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease; /* Animación para el hover */
+        }
+
+        .boton:hover {
+            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
+        }
     </style>
 </head>
 <body>
@@ -341,8 +360,8 @@ session_start(); // Iniciar la sesión
                         
                     <!-- Mostrar el perfil o el enlace a iniciar sesión según el tipo de sesión -->
                         <?php if (isset($_SESSION['nombre_usuario'])): ?>
-                            <a href="perfil_usuario.php">Perfil (<?php echo $_SESSION['nombre_usuario']; ?>)</a><br>
-                            <a href="cerrar_sesion.php">Cerrar Sesión</a><br>
+                            <a href="perfil_usuario.php" class="boton2" >Perfil (<?php echo $_SESSION['nombre_usuario']; ?>)</a><br>
+                            <a href="cerrar_sesion.php" class="boton2">Cerrar Sesión</a><br>
                         <?php elseif (isset($_SESSION['nombre_organizacion'])): ?>
                             <a href="perfil_empresa.php">Perfil (<?php echo $_SESSION['nombre_organizacion']; ?>)</a>
                             <a href="cerrar_sesion.php">Cerrar Sesión</a><br>
@@ -355,7 +374,7 @@ session_start(); // Iniciar la sesión
                 <div class="sidebar">
                     <h1>Principal</h1>
                     <br>
-                    <a href="perfil.html" class="boton">Perfil</a><br>
+                    <a href="perfil.php" class="boton">Perfil</a><br>
                     <a href="" class="boton">Popular</a><br>
                     <a href="index.php" class="boton">Inicio</a>
                 </div>
