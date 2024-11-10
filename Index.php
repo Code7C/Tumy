@@ -289,34 +289,40 @@ $result = $cnx->query($sql); // Ejecutar la consulta
 </head>
 <body>
     <header>
-        <!-- Barra superior con título y búsqueda -->
+        <script>
+            // Enviar el formulario al presionar Enter en el campo de búsqueda
+            document.getElementById("search-term").addEventListener("keypress", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("search-form").submit();
+                }
+            });
+
+            // Alternar la caja de búsqueda
+            function toggleSearchBox() {
+                const searchBox = document.getElementById("search-box");
+                searchBox.style.display = searchBox.style.display === "block" ? "none" : "block";
+                document.getElementById("search-term").focus();
+            }
+        </script>
         <div class="navbar">
             <h1>TUMY</h1>
             <div class="nav-right">
-                <!-- Barra de búsqueda -->
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Buscar en TUMY" onclick="toggleSearchBox()" readonly>
-                    <div id="search-box" class="search-box">
-                        <input type="text" id="search-term" placeholder="Escribe para buscar..." oninput="filterResults()">
+                <form id="search-form" action="buscar.php" method="get">
+                    <div class="search-container">
+                        <input type="text" id="search-term" name="termino" placeholder="Escribe para buscar..." required>
                         <div class="location-container">
                             <label for="location">Cambiar ubicación:</label>
-                            <select id="location">
+                            <select id="location" name="ubicacion">
+                                <option value="">Todas las ubicaciones</option>
                                 <option value="ubicacion1">Ubicación 1</option>
                                 <option value="ubicacion2">Ubicación 2</option>
                                 <option value="ubicacion3">Ubicación 3</option>
                             </select>
                         </div>
-                        <div class="keywords-container">
-                            <label>Palabras clave:</label>
-                            <div id="keywords">
-                                <div class="keyword" onclick="selectKeyword('Keyword 1')">Keyword 1</div>
-                                <div class="keyword" onclick="selectKeyword('Keyword 2')">Keyword 2</div>
-                                <div class="keyword" onclick="selectKeyword('Keyword 3')">Keyword 3</div>
-                            </div>
-                        </div>
+                        <button type="submit">Buscar</button> <!-- Botón de búsqueda -->
                     </div>
-                </div>
-                <button onclick="location.href='iniciar_sesion.html'">Iniciar sesión</button>
+                </form>
             </div>
         </div>
     </header>
