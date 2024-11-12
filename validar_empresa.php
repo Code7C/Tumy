@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['nombre_organizacion'] = $nombre_organizacion;
 
             // Redirigir a la página principal de la empresa
-            header("Location: index_empresa.php");
+            header("Location: principal2.php");
             exit;
         } else {
             // Contraseña incorrecta

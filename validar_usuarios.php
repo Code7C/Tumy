@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['nombre_usuario'] = $nombre_usuario;
 
             // Redirigir a la página principal
-            Header("Location: Principal.php");
+            Header("Location: principal2.php");
             exit;
         } else {
             echo "<h1>Error: Contraseña incorrecta</h1>";

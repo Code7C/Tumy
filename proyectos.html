@@ -1,0 +1,272 @@
+<?php
+include 'db.php'; // Conectar a la base de datos
+
+$sql = "
+SELECT 
+    p.titulo, 
+    p.cuerpo, 
+    p.fecha_publicacion, 
+    p.palabras_claves,
+    e.nombre_organizacion AS organizacion
+FROM 
+    publicaciones p
+LEFT JOIN 
+    empresas e ON p.empresa_id = e.id
+ORDER BY 
+    p.fecha_publicacion DESC
+";
+$result = $cnx->query($sql); // Ejecutar la consulta
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<style type="text/css">
+		/* Contenedor del video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Estilos de fondo y fuentes */
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Barra lateral izquierda */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: rgba(17, 17, 17, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 1; /* Asegura que esté por encima del video */
+        }
+
+        .sidebar a {
+            color: #EEE1C6;
+            text-decoration: none;
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sidebar a img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar a:hover {
+            color: #63BD6D;
+        }
+
+
+                /* Contenido principal */
+        .main-content {
+            margin-left: 22%;
+            margin-right: 22%;
+            padding: 30px;
+        }
+        .post-tags {
+            margin-top: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #ff5f00;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 5px;
+            font-size: 12px;
+        }
+
+        .tag:hover {
+            background-color: #e65a00;
+        }
+
+
+        .post {
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-header h2 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .post-header p {
+            font-size: 14px;
+            color: #ccc;
+        }
+
+        .post-header button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .post-header button:hover {
+            background-color: #005bb5;
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .post-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        /* Barra lateral derecha */
+        .right-sidebar {
+            position: fixed;
+            top: 60px;
+            right: 0;
+            width: 20%;
+            background-color: #111111;
+            height: 100vh;
+            padding: 30px;
+        }
+
+        .right-sidebar h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .right-sidebar .user-info {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .right-sidebar .user-info p {
+            font-size: 16px;
+            color: #ccc;
+            margin-bottom: 10px;
+        }
+
+	</style>
+</head>
+<body>
+
+	<!-- Video de fondo -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="ft/fd2.mp4" type="video/mp4">
+            Tu navegador no soporta el video de fondo.
+        </video>
+    </div>
+
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <a href="principal2.php"><img src="ft/hogar.png">Inicio</a>
+        <a href="iniciar_sesion.html"><img src="ft/sesion.png">Iniciar Sesion</a>
+        <a href="perfil.php"><img src="ft/usuario.png">Perfil</a>
+        <a href="services.html"><img src="ft/ayudar.png" >Voluntariados</a>
+    </div>
+
+
+    <!-- Contenido principal -->
+    <div class="main-content">
+        <!-- Publicaciones -->
+        <?php if ($result->num_rows > 0): ?>
+            <?php while ($row = $result->fetch_assoc()): ?>
+                <div class="post">
+                    <div class="post-header">
+                        <div>
+                            <h2><?php echo htmlspecialchars($row['organizacion']); ?></h2>
+                            <p><?php echo htmlspecialchars($row['titulo']); ?> - Publicado el: <?php echo htmlspecialchars($row['fecha_publicacion']); ?></p>
+                        </div>
+                        <button>Ver</button>
+                    </div>
+                    <div class="post-content">
+                        <?php echo htmlspecialchars($row['cuerpo']); ?>
+                    </div>
+                    <div class="post-tags">
+                        <?php 
+                        $palabras_claves = explode(',', $row['palabras_claves']); // Divide las palabras clave en un array
+                        foreach ($palabras_claves as $clave): 
+                            if (!empty(trim($clave))): // Evita etiquetas vacías
+                        ?>
+                            <span class="tag"><?php echo htmlspecialchars(trim($clave)); ?></span>
+                        <?php 
+                            endif;
+                        endforeach; 
+                        ?>
+                    </div>
+                    <div class="post-buttons">
+                        <button>Me gusta</button>
+                        <button>Comentar</button>
+                        <button>Compartir</button>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        <?php else: ?>
+            <p>No hay publicaciones disponibles.</p>
+        <?php endif; ?>
+
+        <?php $cnx->close(); // Cerrar la conexión ?>
+    </div>
+
+</body>
+</html>

@@ -39,6 +39,60 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
     <link rel="stylesheet" href="styles.css"> 
     <style>
 
+        /* Contenedor del video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Barra lateral izquierda */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: rgba(17, 17, 17, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 1; /* Asegura que esté por encima del video */
+        }
+
+        .sidebar a {
+            color: #EEE1C6;
+            text-decoration: none;
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sidebar a img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar a:hover {
+            color: #63BD6D;
+        }
+
+
+
+
         body {
             background-image: url("ft/fond.jpg");
             background-position: center;
@@ -64,9 +118,9 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             max-width: 500px; /* Ancho máximo del contenedor */
             margin: auto; /* Centramos el contenedor */
             padding: 20px;
-            background: #135124; /* Fondo más claro para el contenedor */
+            background: rgba(202, 255, 191, 0.9); /* Fondo más claro para el contenedor */
             border-radius: 8px; /* Bordes redondeados */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5); /* Sombra para efecto de profundidad */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7); /* Sombra para efecto de profundidad */
         }
 
         h1 {
@@ -85,11 +139,11 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         input[type="date"] {
             margin-bottom: 15px; /* Espaciado entre campos */
             padding: 10px; /* Espaciado interno de los campos */
-            border: 1px solid #555; /* Borde gris oscuro */
+            border: none; /* Borde gris oscuro */
             border-radius: 4px; /* Bordes redondeados para los campos */
             font-size: 16px; /* Tamaño de fuente */
-            background-color: #084309; /* Fondo oscuro para los campos */
-            color: #f4f4f4; /* Texto claro en los campos */
+            background-color: white; /* Fondo oscuro para los campos */
+            color: black; /* Texto claro en los campos */
         }
 
         input[type="text"]:focus,
@@ -104,7 +158,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             padding: 10px;
             border: none; /* Sin borde */
             border-radius: 4px; /* Bordes redondeados para el botón */
-            background-color: #5cb85c; /* Color de fondo del botón */
+            background-color: #63BD6D; /* Color de fondo del botón */
             color: white; /* Color del texto del botón */
             font-size: 16px; /* Tamaño de fuente del botón */
             cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
@@ -123,7 +177,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         .boton {
             display: inline-block;
             padding: 10px 25px;
-            background-color: #177828; /* Color de fondo del botón */
+            background-color: #63BD6D; /* Color de fondo del botón */
             color: white; /* Color del texto */
             text-decoration: none; /* Quitar subrayado */
             font-size: 1.2em;
@@ -140,6 +194,22 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
     </style>
 </head>
 <body>
+
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="ft/fd2.mp4" type="video/mp4">
+            Tu navegador no soporta el video de fondo.
+        </video>
+    </div>
+
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <a href="principal2.php"><img src="ft/hogar.png" alt="Inicio">Inicio</a>
+        <a href="iniciar_sesion.html"><img src="ft/sesion.png" alt="Iniciar Sesión">Iniciar Sesión</a>
+        <a href="perfil.php"><img src="ft/usuario.png" alt="Perfil">Perfil</a>
+        <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
+    </div>
+
     <div class="container">
         <h1>Registro de Empresa</h1>
         <form action="" method="POST">

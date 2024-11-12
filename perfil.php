@@ -1,91 +1,177 @@
+<?php
+include 'db.php'; // Include the database connection
+
+// Assume the user ID is stored in a session or retrieved after login.
+session_start();
+$user_id = $_SESSION['user_id'] ?? null; // Replace with actual session variable
+
+// Fetch user data if ID is available
+if ($user_id) {
+    $query = $cnx->prepare("SELECT nombre, apellido, nombre_usuario, email FROM usuarios WHERE id = ?");
+    $query->bind_param("i", $user_id);
+    $query->execute();
+    $result = $query->get_result();
+    $user = $result->fetch_assoc();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TUMY</title>
+    <title>TUMY - Perfil de Usuario</title>
     <style>
-        /* Estilos generales del cuerpo */
+        /* Estilos generales */
         body {
-            background-image: url("ft/fond.jpg");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            color: #fff;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f3f3f3;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Contenedor del video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
             height: 100vh;
+            overflow: hidden;
+            z-index: -1;
         }
 
-        /* Contenedor principal */
-        .container {
-            width: 500px;
-            max-width: 700px;
-            height: 500px;
-            background-color: rgba(11, 51, 11, 0.9);
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 40px;
-            text-align: center;
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        /* Título */
-        .title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 20px;
+        /* Barra lateral izquierda */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: rgba(17, 17, 17, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 1; /* Asegura que esté por encima del video */
         }
 
-        /* Sección de perfil */
-        .profile-section {
+        .sidebar a {
+            color: #EEE1C6;
+            text-decoration: none;
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sidebar a img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar a:hover {
+            color: #63BD6D;
+        }
+
+        /* Iconos de redes sociales en la barra lateral */
+        .social-links {
             margin-top: 20px;
-            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            color: #EEE1C6;
         }
 
-        .profile-section img {
+        .social-links a {
+            color: #EEE1C6;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #63BD6D;
+        }
+
+        /* Contenedor principal de la tarjeta */
+        .profile-card {
+            width: 500px;
+            background-color: rgba(202, 255, 191, 0.9);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-left: 150px;
+        }
+
+        /* Imagen de portada */
+        .cover-photo {
+            width: 100%;
+            height: 120px;
+            background-image: url("ft/portada.jpg");
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Imagen de perfil */
+        .profile-photo {
             width: 100px;
             height: 100px;
-            background-color: white;
-            display: block;
-            margin: 0 auto;
             border-radius: 50%;
-            cursor: pointer;
+            border: 4px solid #fff;
+            margin-top: -50px;
+            background-color: white;
         }
 
+        /* Información del usuario */
         .profile-info {
-            background-color: white;
-            height: auto;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            color: #222;
+            padding: 20px;
+            color: #333;
         }
+
+        .profile-info h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+
+        .profile-info p {
+            font-size: 14px;
+            color: #777;
+            margin: 0;
+        }
+
 
         /* Sección de comentarios */
         .comments-section {
-            margin-top: 20px;
-            border-top: 1px solid #333;
-            padding-top: 10px;
+            padding: 20px;
+            background-color: rgba(202, 255, 191, 0.9);
+            margin-top: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .comment {
-            background-color: white;
-            height: 15px;
-            margin: 10px 0;
-            border-radius: 5px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            font-size: 14px;
+            color: #333;
         }
 
-        /* Texto de encabezado */
-        .section-title {
-            font-size: 14px;
-            font-weight: bold;
-            color: #cccccc;
-            margin-bottom: 10px;
+        .comment:last-child {
+            border-bottom: none;
         }
 
         /* Ocultar el input de archivo */
@@ -96,76 +182,62 @@
 </head>
 <body>
 
-    <?php
-    session_start(); // Iniciar sesión para obtener el nombre de usuario
+    <!-- Video de fondo -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="ft/fd2.mp4" type="video/mp4">
+            Tu navegador no soporta el video de fondo.
+        </video>
+    </div>
 
-    // Conectar a la base de datos
-    $servername = "localhost"; // Cambia esto si es necesario
-    $username = "root"; // Cambia esto según el nombre de usuario de tu base de datos
-    $password = ""; // Cambia esto según la contraseña de tu base de datos
-    $dbname = "tumy"; // Nombre de la base de datos
+    <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <a href="principal2.php"><img src="ft/hogar.png" alt="Inicio">Inicio</a>
+        <a href="iniciar_sesion.html"><img src="ft/sesion.png" alt="Iniciar Sesión">Iniciar Sesión</a>
+        <a href="perfil.php"><img src="ft/usuario.png" alt="Perfil">Perfil</a>
+        <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
+    </div>
 
-    // Crear la conexión
-    $conn = new mysqli($servername, $username, $password, $dbname);
+    
 
-    // Verificar la conexión
-    if ($conn->connect_error) {
-        die("Conexión fallida: " . $conn->connect_error);
-    }
+    
 
-    // Obtener el nombre de usuario de la sesión
-    $nombre_usuario = $_SESSION['nombre_usuario'] ?? null;
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TUMY - Perfil de Usuario</title>
+    <style>
+        /* Add your existing CSS styles here */
+    </style>
+</head>
+<body>
 
-    if ($nombre_usuario) {
-        // Obtener datos del usuario desde la base de datos
-        $sql = "SELECT nombre_usuario, nombre, apellido, email, ubicacion FROM usuarios WHERE nombre_usuario = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $nombre_usuario);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    <!-- Existing HTML for profile layout, sidebar, and background video -->
 
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc(); // Obtener datos del usuario
-        } else {
-            echo "No se encontraron datos para el usuario.";
-        }
+    <div class="profile-card">
+        <div class="cover-photo"></div>
 
-        $stmt->close();
-    } else {
-        echo "Por favor, inicie sesión.";
-    }
+        <label for="profile-upload">
+            <img id="profile-pic" src="ft/perfil.jpg" alt="Imagen de perfil" class="profile-photo" title="Haz clic para cambiar la foto">
+        </label>
+        <input type="file" id="profile-upload" accept="image/*" onchange="loadProfilePicture(event)">
 
-    $conn->close();
-    ?>
-
-    <div class="container">
-        <div class="title">TUMY</div>
-
-        <!-- Sección de perfil -->
-        <div class="profile-section">
-            <div class="section-title">Perfil</div>
-            <label for="profile-upload">
-                <img id="profile-pic" src="/mnt/data/perfil.jpg" alt="Imagen de perfil" title="Haz clic para cambiar la foto">
-            </label>
-            <input type="file" id="profile-upload" accept="image/*" onchange="loadProfilePicture(event)">
-
-            <!-- Información del usuario -->
-            <div class="profile-info" style="background-color:rgba(11, 51, 11, 0.9);color:white;box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
-                <p><strong>Usuario:</strong> <?php echo $user['nombre_usuario'] ?? 'No disponible'; ?></p>
-                <p><strong>Nombre:</strong> <?php echo $user['nombre'] ?? 'No disponible'; ?></p>
-                <p><strong>Apellido:</strong> <?php echo $user['apellido'] ?? 'No disponible'; ?></p>
-                <p><strong>Email:</strong> <?php echo $user['email'] ?? 'No disponible'; ?></p>
-                <p><strong>Ubicación:</strong> <?php echo $user['ubicacion'] ?? 'No disponible'; ?></p>
-            </div>
-        </div>
-
-        <!-- Sección de comentarios -->
-        <div class="comments-section">
-            <div class="section-title">Comentarios</div>
-            <div class="comment"></div>
-            <div class="comment"></div>
+        <div class="profile-info">
+            <h2><?php echo htmlspecialchars($user['nombre'] ?? 'Nombre no disponible'); ?> <?php echo htmlspecialchars($user['apellido'] ?? ''); ?></h2>
+            <p><?php echo htmlspecialchars($user['nombre_usuario'] ?? 'Usuario no disponible'); ?></p>
+            <p><?php echo htmlspecialchars($user['email'] ?? 'Email no disponible'); ?></p>
         </div>
     </div>
+
+    <script>
+        // JavaScript for profile picture upload (same as before)
+    </script>
+
+</body>
+</html>
+
 
     <script>
         // Cargar imagen desde LocalStorage al iniciar
@@ -186,11 +258,12 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     profilePic.src = e.target.result;
-                    localStorage.setItem('profileImage', e.target.result); // Guardar imagen en LocalStorage
+                    localStorage.setItem('profileImage', e.target.result);
                 };
                 reader.readAsDataURL(file);
             }
         }
     </script>
+
 </body>
 </html>

@@ -36,7 +36,7 @@ session_start(); // Iniciar la sesión
 
         /* Barra superior */
         .navbar {
-            background-color: #135124;
+            background-color: #caffbf;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
@@ -44,7 +44,7 @@ session_start(); // Iniciar la sesión
         }
 
         .navbar h1 {
-            color: white;
+            color: #EEE1C6;
             font-size: 24px;
             margin-right: 20px;
         }
@@ -55,7 +55,7 @@ session_start(); // Iniciar la sesión
             border-radius: 5px;
             border: none;
             background-color: #2a2a2a;
-            color: white;
+            color: #EEE1C6;
         }
 
         .navbar input[type="search"]::placeholder {
@@ -64,7 +64,7 @@ session_start(); // Iniciar la sesión
 
         .navbar button {
             background-color: #008000;
-            color: white;
+            color: #EEE1C6;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -79,10 +79,10 @@ session_start(); // Iniciar la sesión
         #search-input {
             padding: 8px;
             border-radius: 5px;
-            border: none;
+            border: 2px;
             width: 300px;
-            background-color: #084309;
-            color: white;
+            background-color: white;
+            color: #EEE1C6;
             cursor: pointer;
         }
 
@@ -92,7 +92,7 @@ session_start(); // Iniciar la sesión
             top: 60px; /* Ajusta según la altura de la barra de navegación */
             left: 0;
             width: 300px;
-            background-color: #2a2a2a;
+            background-color: #caffbf;
             border-radius: 5px;
             padding: 10px;
             z-index: 1000;
@@ -110,12 +110,12 @@ session_start(); // Iniciar la sesión
         .location-container,
         .keywords-container {
             margin-bottom: 10px;
-            color: white;
+            color: #EEE1C6;
         }
 
         .keyword {
-            background-color: #ff5f00;
-            color: white;
+            background-color: #63BD6D;
+            color: #EEE1C6;
             padding: 5px;
             border-radius: 5px;
             margin: 5px 0;
@@ -123,7 +123,7 @@ session_start(); // Iniciar la sesión
         }
 
         .keyword:hover {
-            background-color: #e55c00;
+            background-color: #63BD6D;
         }
 
 
@@ -133,7 +133,7 @@ session_start(); // Iniciar la sesión
             top: 170px;
             left: 0;
             width: 20%;
-            background-color: #135124;
+            background-color: #caffbf;
             padding: 30px;
             height: 100vh;
         }
@@ -145,7 +145,7 @@ session_start(); // Iniciar la sesión
 
         .sidebar p {
             font-size: 16px;
-            color: white;
+            color: #EEE1C6;
             margin-top: 20px;
         }
 
@@ -157,7 +157,7 @@ session_start(); // Iniciar la sesión
         }
 
         .post {
-            background-color: #177828;
+            background-color: #63BD6D;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
@@ -178,12 +178,12 @@ session_start(); // Iniciar la sesión
 
         .post-header p {
             font-size: 14px;
-            color: white;
+            color: black;
         }
 
         .post-header button {
-            background-color: #084309;
-            color: white;
+            background-color: #008F39;
+            color: #EEE1C6;
             border: none;
             padding: 10px 20px;
             border-radius: 5px;
@@ -202,8 +202,8 @@ session_start(); // Iniciar la sesión
         }
 
         .post-buttons button {
-            background-color: #084309;
-            color: white;
+            background-color: #008F39;
+            color: #EEE1C6;
             padding: 10px;
             border: none;
             border-radius: 5px;
@@ -212,7 +212,7 @@ session_start(); // Iniciar la sesión
         }
 
         .post-buttons button:hover {
-            background-color: #084309;
+            background-color: #008F39;
         }
 
         /* Barra lateral derecha */
@@ -221,7 +221,7 @@ session_start(); // Iniciar la sesión
             top: 170px;
             right: 0;
             width: 20%;
-            background-color: #135124;
+            background-color: #caffbf;
             height: 100vh;
             padding: 30px;
         }
@@ -232,7 +232,7 @@ session_start(); // Iniciar la sesión
         }
 
         .right-sidebar .user-info {
-            background-color: #084309;
+            background-color: #63BD6D;
             padding: 20px;
             border-radius: 10px;
             text-align: center;
@@ -241,15 +241,15 @@ session_start(); // Iniciar la sesión
 
         .right-sidebar .user-info p {
             font-size: 16px;
-            color: white;
+            color: #EEE1C6;
             margin-bottom: 10px;
         }
         /* Estilo para el botón */
         .boton {
             display: inline-block;
             padding: 10px 25px;
-            background-color: #177828; /* Color de fondo del botón */
-            color: white; /* Color del texto */
+            background-color: #63BD6D; /* Color de fondo del botón */
+            color: #EEE1C6; /* Color del texto */
             text-decoration: none; /* Quitar subrayado */
             font-size: 1.2em;
             font-weight: bold;
@@ -268,7 +268,7 @@ session_start(); // Iniciar la sesión
             display: inline-block;
             padding: 4px 15px;
             background-color: #177828; /* Color de fondo del botón */
-            color: white; /* Color del texto */
+            color: #EEE1C6; /* Color del texto */
             text-decoration: none; /* Quitar subrayado */
             font-size: 1.2em;
             font-weight: bold;
@@ -372,7 +372,7 @@ session_start(); // Iniciar la sesión
                 </div>
                 <!-- Barra lateral izquierda -->
                 <div class="sidebar">
-                    <h1>Principal</h1>
+                    <h1 style="color:#EEE1C6">Principal</h1>
                     <br>
                     <a href="perfil.php" class="boton">Perfil</a><br>
                     <a href="" class="boton">Popular</a><br>
@@ -419,7 +419,7 @@ session_start(); // Iniciar la sesión
                 </div>
                 <!-- Barra lateral derecha -->
                 <div class="right-sidebar">
-                    <h2>Organizaciones Populares</h2>
+                    <h2 style="color:#EEE1C6">Organizaciones Populares</h2>
                     <div class="user-info">
                         <p>Usuario</p>
                         <p>Ubicación</p>

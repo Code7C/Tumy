@@ -6,19 +6,57 @@
     <title>Iniciar Sesión Empresa</title>
     <style>
 
-         body {
-            background-image: url("ft/fond.jpg");
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #0e0e0e;
-            color: #fff;
+        /* Contenedor del video de fondo */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: -1;
         }
 
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Barra lateral izquierda */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 90px;
+            height: 100vh;
+            background-color: rgba(17, 17, 17, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            z-index: 1; /* Asegura que esté por encima del video */
+        }
+
+        .sidebar a {
+            color: #EEE1C6;
+            text-decoration: none;
+            margin: 50px 0;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .sidebar a img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar a:hover {
+            color: #63BD6D;
+        }
+        
         body {
             font-family: 'Arial', sans-serif;
             background-color: #1c1c1c;
@@ -30,7 +68,7 @@
         }
 
         .login-container {
-            background-color: #135124;
+            background-color:rgba(202, 255, 191, 0.9);
             padding: 40px;
             border-radius: 10px;
             text-align: center;
@@ -48,12 +86,12 @@
             margin-bottom: 20px;
             border-radius: 5px;
             border: none;
-            background-color: #444;
-            color: white;
+            background-color: white;
+            color: black;
         }
 
         .login-container button {
-            background-color: #0066cc;
+            background-color: #63BD6D;
             color: white;
             padding: 10px 20px;
             border: none;
@@ -64,12 +102,12 @@
         }
 
         .login-container button:hover {
-            background-color: #005bb5;
+            background-color: #32CD32;
         }
 
         .login-container .register {
             display: block;
-            color: #ccc;
+            color: black;
             text-decoration: none;
             margin-top: 20px;
         }
@@ -82,7 +120,7 @@
         .boton {
             display: inline-block;
             padding: 10px 25px;
-            background-color: #177828; /* Color de fondo del botón */
+            background-color: #63BD6D; /* Color de fondo del botón */
             color: white; /* Color del texto */
             text-decoration: none; /* Quitar subrayado */
             font-size: 1.2em;
@@ -95,9 +133,30 @@
         .boton:hover {
             background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
         }
+
+
+        
+
     </style>
 </head>
 <body>
+
+    <!-- Video de fondo -->
+    <div class="video-background">
+        <video autoplay loop muted>
+            <source src="ft/fd2.mp4" type="video/mp4">
+            Tu navegador no soporta el video de fondo.
+        </video>
+    </div>
+
+     <!-- Barra lateral izquierda -->
+    <div class="sidebar">
+        <a href="principal2.php"><img src="ft/hogar.png" alt="Inicio">Inicio</a>
+        <a href="iniciar_sesion.html"><img src="ft/sesion.png" alt="Iniciar Sesión">Iniciar Sesión</a>
+        <a href="perfil.php"><img src="ft/usuario.png" alt="Perfil">Perfil</a>
+        <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
+    </div>
+
     <div class="login-container">
         <h1>Iniciar Sesión Empresa</h1>
         <form action="validar_empresa.php" method="POST">
