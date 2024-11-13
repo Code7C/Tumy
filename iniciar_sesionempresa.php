@@ -56,6 +56,8 @@
         .sidebar a:hover {
             color: #63BD6D;
         }
+
+        
         
         body {
             font-family: 'Arial', sans-serif;
@@ -88,6 +90,7 @@
             border: none;
             background-color: white;
             color: black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .login-container button {
@@ -136,6 +139,25 @@
 
 
         
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Transición para el efecto */
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.1); /* Aumenta el tamaño temporalmente */
+        }
 
     </style>
 </head>
@@ -157,13 +179,26 @@
         <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
     </div>
 
+    <script>
+            // Función para manejar el clic en los botones
+                function handleButtonClick(button) {
+                    // Añadir la clase .button-clicked
+                    button.classList.add('button-clicked');
+
+                    // Remover la clase después de un breve tiempo
+                    setTimeout(function() {
+                        button.classList.remove('button-clicked');
+                    }, 200); // 200ms para un efecto rápido
+                }
+            </script>
+
     <div class="login-container">
         <h1>Iniciar Sesión Empresa</h1>
         <form action="validar_empresa.php" method="POST">
             <input type="email" name="email" placeholder="Correo Electrónico de la Empresa" required>
             <input type="password" name="password" placeholder="Contraseña" required>
             <br>
-            <button type="submit" class="boton">Iniciar Sesión</button>
+            <button type="submit" class="boton" onclick="handleButtonClick(this)">Iniciar Sesión</button>
         </form>
         <a href="register_empresa.php" class="register">¿No tienes cuenta? Regístrate como Empresa</a>
     </div>

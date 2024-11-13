@@ -339,6 +339,28 @@ $result = $cnx->query($sql); // Ejecutar la consulta
             background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
         }
 
+
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Transición para el efecto */
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.3); /* Aumenta el tamaño temporalmente */
+        }
+
+
 	</style>
 </head>
 <body>
@@ -386,6 +408,20 @@ $result = $cnx->query($sql); // Ejecutar la consulta
         <a href="proyectos.php"><img src="ft/ayudar.png" >Voluntariados</a>
     </div>
 
+    <script>
+    // Función para manejar el clic en los botones
+        function handleButtonClick(button) {
+            // Añadir la clase .button-clicked
+            button.classList.add('button-clicked');
+
+            // Remover la clase después de un breve tiempo
+            setTimeout(function() {
+                button.classList.remove('button-clicked');
+            }, 200); // 200ms para un efecto rápido
+        }
+    </script>
+
+
 
     <!-- Contenido principal -->
     <div class="main-content">
@@ -398,7 +434,7 @@ $result = $cnx->query($sql); // Ejecutar la consulta
                             <h2><?php echo htmlspecialchars($row['organizacion']); ?></h2>
                             <p><?php echo htmlspecialchars($row['titulo']); ?> - Publicado el: <?php echo htmlspecialchars($row['fecha_publicacion']); ?></p>
                         </div>
-                        <button class="boton">Ver</button>
+                        <button class="boton" onclick="handleButtonClick(this)" >Ver</button>
                     </div>
                     <div class="post-content">
                         <?php echo htmlspecialchars($row['cuerpo']); ?>
@@ -416,10 +452,11 @@ $result = $cnx->query($sql); // Ejecutar la consulta
                         ?>
                     </div>
                     <div class="post-buttons">
-                        <button class="boton">Me gusta</button>
-                        <button class="boton">Comentar</button>
-                        <button class="boton">Compartir</button>
+                        <button class="boton" onclick="handleButtonClick(this)">Me gusta</button>
+                        <button class="boton" onclick="handleButtonClick(this)">Comentar</button>
+                        <button class="boton" onclick="handleButtonClick(this)">Compartir</button>
                     </div>
+
                 </div>
             <?php endwhile; ?>
         <?php else: ?>

@@ -233,6 +233,30 @@ session_start(); // Iniciar la sesión
             font-size: 14px;
             color: #999;
         }
+
+
+
+
+
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Transición para el efecto */
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.1); /* Aumenta el tamaño temporalmente */
+        }
     </style>
 </head>
 <body>
@@ -247,11 +271,24 @@ session_start(); // Iniciar la sesión
 
     <!-- Barra lateral izquierda -->
     <div class="sidebar">
-        <a href="principal2.php"><img src="ft/hogar.png">Inicio</a>
+        <a href="principal2.php"><img src="ft/hogar.png" onclick="handleButtonClick(this)">Inicio</a>
         <a href="iniciar_sesion.html"><img src="ft/sesion.png">Iniciar Sesion</a>
         <a href="perfil.php"><img src="ft/usuario.png">Perfil</a>
         <a href="proyectos.php"><img src="ft/ayudar.png" >Voluntariados</a>
     </div>
+
+    <script>
+            // Función para manejar el clic en los botones
+                function handleButtonClick(button) {
+                    // Añadir la clase .button-clicked
+                    button.classList.add('button-clicked');
+
+                    // Remover la clase después de un breve tiempo
+                    setTimeout(function() {
+                        button.classList.remove('button-clicked');
+                    }, 200); // 200ms para un efecto rápido
+                }
+            </script>
 
     <!-- Barra superior -->
     <div class="navbar">
@@ -279,6 +316,9 @@ session_start(); // Iniciar la sesión
                 </div>
             </div>
         </div>
+
+            
+
         <!-- Mostrar el perfil o el enlace a iniciar sesión según el tipo de sesión -->
                         <?php if (isset($_SESSION['nombre_usuario'])): ?>
                             <a href="perfil.php" class="boton" >Perfil (<?php echo $_SESSION['nombre_usuario']; ?>)</a><br>
@@ -299,7 +339,7 @@ session_start(); // Iniciar la sesión
             <div class="post-content">
                 <h2>Proyecto 1</h2>
                 <p>Descripción breve del proyecto de voluntariado.</p><br>
-                <a href="proyectos.php" class="boton">Ver más</a>
+                <a href="proyectos.php" class="boton" onclick="handleButtonClick(this)">Ver más</a>
             </div>
         </div><br>
 
@@ -307,7 +347,7 @@ session_start(); // Iniciar la sesión
             <div class="post-content">
                 <h2>Proyecto 2</h2>
                 <p>Descripción breve del proyecto de voluntariado.</p><br>
-                <a href="proyectos.php" class="boton">Ver más</a>
+                <a href="proyectos.php" class="boton" onclick="handleButtonClick(this)">Ver más</a>
             </div>
         </div>
     </div>

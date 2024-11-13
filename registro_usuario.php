@@ -177,6 +177,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             border: none;
             background-color: white;
             color: black;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .login-container button {
@@ -298,10 +299,32 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             border-radius: 5px;
             margin-top: 20px;
             transition: background-color 0.3s ease; /* Animación para el hover */
+            border: none;
         }
 
         .boton:hover {
             background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
+        }
+
+
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Transición para el efecto */
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.1); /* Aumenta el tamaño temporalmente */
         }
 
     </style>
@@ -328,6 +351,19 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
     </div>
 
+    <script>
+            // Función para manejar el clic en los botones
+                function handleButtonClick(button) {
+                    // Añadir la clase .button-clicked
+                    button.classList.add('button-clicked');
+
+                    // Remover la clase después de un breve tiempo
+                    setTimeout(function() {
+                        button.classList.remove('button-clicked');
+                    }, 200); // 200ms para un efecto rápido
+                }
+            </script>
+
     <div class="container">
         <h1>Registro de Usuario</h1>
         <form action="" method="POST">
@@ -338,7 +374,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             <input type="date" name="fecha_nacimiento" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="contrasena" placeholder="Contraseña" required>
-            <button type="submit" name="register_user" class="boton">Registrarse</button>
+            <button type="submit" name="register_user" class="boton" onclick="handleButtonClick(this)">Registrarse</button>
         </form>
 
         <?php if (isset($mensaje)) echo "<p>$mensaje</p>"; ?>

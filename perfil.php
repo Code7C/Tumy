@@ -13,7 +13,23 @@ if ($user_id) {
     $result = $query->get_result();
     $user = $result->fetch_assoc();
 }
+
+// Verificar si el formulario de edición ha sido enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['description'])) {
+    $description = $_POST['description'];
+
+    // Actualizar la descripción en la base de datos
+    if ($user_id) {
+        $update_query = $cnx->prepare("UPDATE usuarios SET descripcion = ? WHERE id = ?");
+        $update_query->bind_param("si", $description, $user_id);
+        $update_query->execute();
+    }
+}
+
 ?>
+
+
+
 
 <!DOCTYPE html>
 <html lang="es">
@@ -85,24 +101,6 @@ if ($user_id) {
             color: #63BD6D;
         }
 
-        /* Iconos de redes sociales en la barra lateral */
-        .social-links {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            color: #EEE1C6;
-        }
-
-        .social-links a {
-            color: #EEE1C6;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: #63BD6D;
-        }
 
         /* Contenedor principal de la tarjeta */
         .profile-card {
@@ -114,25 +112,6 @@ if ($user_id) {
             text-align: center;
             font-family: Arial, sans-serif;
             margin-left: 150px;
-        }
-
-        /* Imagen de portada */
-        .cover-photo {
-            width: 100%;
-            height: 120px;
-            background-image: url("ft/portada.jpg");
-            background-size: cover;
-            background-position: center;
-        }
-
-        /* Imagen de perfil */
-        .profile-photo {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 4px solid #fff;
-            margin-top: -50px;
-            background-color: white;
         }
 
         /* Información del usuario */
@@ -178,6 +157,128 @@ if ($user_id) {
         #profile-upload {
             display: none;
         }
+
+
+
+        /* Tarjeta de perfil */
+        .profile-card {
+            width: 400px;
+            height: 400px;
+            background-color: rgba(202, 255, 191, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Encabezado de perfil */
+        .profile-header {
+            background-color: rgba(17, 17, 17, 0.9);
+            color: #fff;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Foto de perfil */
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            margin-top: -50px;
+            background-color: white;
+        }
+
+        /* Breve descripción */
+        .description {
+            font-size: 12px;
+            color: #777;
+            padding: 0 15px 15px;
+        }
+
+
+        /* Sección de la descripción editable */
+        .description-section {
+            padding: 5px;
+            background-color: rgba(202, 255, 191, 0.9);
+            margin-top: 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .description-textarea {
+            width: 50%;
+            height: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            resize: none;
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .save-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #63BD6D;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .save-button:hover {
+            background-color: #4cae4c;
+        }
+
+
+        /* Estilo para el botón */
+        .boton {
+            display: inline-block;
+            padding: 5px 15px;
+            background-color: #63BD6D; /* Color de fondo del botón */
+            color: white; /* Color del texto */
+            text-decoration: none; /* Quitar subrayado */
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 5px;
+            transition: background-color 0.3s ease; /* Animación para el hover */
+        }
+        .boton:hover {
+            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
+        }
+
+
+
+
+        .post-buttons button {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: #63BD6D; /* Color de fondo del botón */
+            color: white; /* Color del texto */
+            text-decoration: none; /* Quitar subrayado */
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease; /* Animación para el hover */
+        }
+        .boton:hover {
+            background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.3); /* Aumenta el tamaño temporalmente */
+        }
+
     </style>
 </head>
 <body>
@@ -198,46 +299,39 @@ if ($user_id) {
         <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
     </div>
 
-    
 
-    
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TUMY - Perfil de Usuario</title>
-    <style>
-        /* Add your existing CSS styles here */
-    </style>
-</head>
-<body>
-
-    <!-- Existing HTML for profile layout, sidebar, and background video -->
-
+    <!-- Tarjeta de perfil -->
     <div class="profile-card">
-        <div class="cover-photo"></div>
+        <div class="profile-header">Perfil</div>
 
+        <!-- Foto de perfil con opción de cambio -->
         <label for="profile-upload">
             <img id="profile-pic" src="ft/perfil.jpg" alt="Imagen de perfil" class="profile-photo" title="Haz clic para cambiar la foto">
         </label>
         <input type="file" id="profile-upload" accept="image/*" onchange="loadProfilePicture(event)">
 
+        <!-- Información del usuario -->
         <div class="profile-info">
             <h2><?php echo htmlspecialchars($user['nombre'] ?? 'Nombre no disponible'); ?> <?php echo htmlspecialchars($user['apellido'] ?? ''); ?></h2>
             <p><?php echo htmlspecialchars($user['nombre_usuario'] ?? 'Usuario no disponible'); ?></p>
             <p><?php echo htmlspecialchars($user['email'] ?? 'Email no disponible'); ?></p>
         </div>
+
+        <!-- Redes sociales -->
+        <div class="social-links">
+            <a href="https://x.com/?lang=es"><img src="ft/x.png" alt="Twitter" style="width:35px; height: 35px;"></a>
+            <a href="https://www.instagram.com/"><img src="ft/ig.png" alt="Facebook" style="width:35px; height: 35px;"></a>
+            <a href="https://www.facebook.com/?locale=es_LA"><img src="ft/face.png" alt="Facebook" style="width:35px; height: 35px;"></a>
+        </div><br>
+
+        <!-- Descripción editable -->
+        <div class="description-section">
+            <form method="POST">
+                <textarea name="description" class="description-textarea" placeholder="Ingresa tu descripción aquí..."><?php echo htmlspecialchars($user['descripcion'] ?? ''); ?></textarea><br>
+                <button type="submit" class="boton" class="save-button" onclick="handleButtonClick(this)" >Guardar</button>
+            </form>
+        </div>
     </div>
-
-    <script>
-        // JavaScript for profile picture upload (same as before)
-    </script>
-
-</body>
-</html>
-
 
     <script>
         // Cargar imagen desde LocalStorage al iniciar

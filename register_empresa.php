@@ -144,6 +144,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             font-size: 16px; /* Tamaño de fuente */
             background-color: white; /* Fondo oscuro para los campos */
             color: black; /* Texto claro en los campos */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         input[type="text"]:focus,
@@ -191,6 +192,28 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             background-color: #32CD32; /* Cambia de color cuando se pasa el ratón */
         }
 
+
+
+        .post-buttons button {
+            background-color: #444;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s ease, transform 0.2s ease; /* Transición para el efecto */
+        }
+
+        .post-buttons button:hover {
+            background-color: #555;
+        }
+
+        .button-clicked {
+            background-color: #32CD32; /* Cambia el color temporalmente */
+            transform: scale(1.1); /* Aumenta el tamaño temporalmente */
+        }
+
     </style>
 </head>
 <body>
@@ -210,6 +233,20 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
         <a href="proyectos.php"><img src="ft/ayudar.png" alt="Voluntariados">Voluntariados</a>
     </div>
 
+
+    <script>
+            // Función para manejar el clic en los botones
+                function handleButtonClick(button) {
+                    // Añadir la clase .button-clicked
+                    button.classList.add('button-clicked');
+
+                    // Remover la clase después de un breve tiempo
+                    setTimeout(function() {
+                        button.classList.remove('button-clicked');
+                    }, 200); // 200ms para un efecto rápido
+                }
+            </script>
+
     <div class="container">
         <h1>Registro de Empresa</h1>
         <form action="" method="POST">
@@ -218,7 +255,7 @@ mysqli_close($cnx); // Cerrar la conexión a la base de datos
             <input type="text" name="ubicacion" placeholder="Ubicación" required>
             <input type="email" name="email" placeholder="Email" required>
             <input type="password" name="contrasena" placeholder="Contraseña" required>
-            <button type="submit" name="register_empresa" class="boton">Registrarse</button>
+            <button type="submit" name="register_empresa" class="boton" onclick="handleButtonClick(this)" onclick="principal2">Registrarse</button>
         </form>
         <?php if (isset($mensaje_empresa)) echo "<p>$mensaje_empresa</p>"; ?>
     </div>
